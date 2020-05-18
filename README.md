@@ -61,7 +61,7 @@ You can [download](https://github.com/glenjasper/search-keywords/archive/master.
                             [-o OUTPUT] [--version]
 
   Script que faz a busca de palavras-chave em arquivos .txt, na seção 'Materials
-  & Methods'
+  and Methods'
 
   optional arguments:
     -h, --help            show this help message and exit
@@ -69,10 +69,10 @@ You can [download](https://github.com/glenjasper/search-keywords/archive/master.
                           Pasta que contem os arquivos .txt
     -fp FOLDER_PDF, --folder_pdf FOLDER_PDF
                           Pasta que contem os arquivos .pdf, usado no final da
-                          busca para fazer uma copia dos .pdf que tem as
-                          palavras-chave
+                          busca para fazer copias dos arquivos .pdf que
+                          cumpliram a condição
     -kw KEYWORDS, --keywords KEYWORDS
-                          Arquivo plano que contem as palavras-chave, uma
+                          Arquivo de texto que contem as palavras-chave, uma
                           palavra-chave por linha
     -o OUTPUT, --output OUTPUT
                           Pasta de saida
