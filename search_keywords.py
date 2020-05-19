@@ -11,10 +11,10 @@ import xlsxwriter
 import pandas as pd
 
 def menu(args):
-    parser = argparse.ArgumentParser(description = "Script que faz a busca de palavras-chave em arquivos .txt, na seção 'Materials & Methods'", epilog = "Thank you!")
+    parser = argparse.ArgumentParser(description = "Script que faz a busca de palavras-chave em arquivos .txt, na seção 'Materials and Methods'", epilog = "Thank you!")
     parser.add_argument("-ft", "--folder_txt", required = True, help = "Pasta que contem os arquivos .txt")
-    parser.add_argument("-fp", "--folder_pdf", required = True, help = "Pasta que contem os arquivos .pdf, usado no final da busca para fazer uma copia dos .pdf que tem as palavras-chave")
-    parser.add_argument("-kw", "--keywords", required = True, help = "Arquivo plano que contem as palavras-chave, uma palavra-chave por linha")
+    parser.add_argument("-fp", "--folder_pdf", required = True, help = "Pasta que contem os arquivos .pdf, usado no final da busca para fazer copias dos arquivos .pdf que cumpliram a condição")
+    parser.add_argument("-kw", "--keywords", required = True, help = "Arquivo de texto que contem as palavras-chave, uma palavra-chave por linha")
     # parser.add_argument("-s", "--section", choices = osk.ARRAY_SECTION, required = True, type = str.lower, help = 'Seção onde as palavras-chaves vão ser procuradas')
     parser.add_argument("-o", "--output", help = "Pasta de saida")
     parser.add_argument("--version", action = "version", version = "%s %s" % ('%(prog)s', osk.VERSION))
