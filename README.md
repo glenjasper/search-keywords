@@ -2,7 +2,7 @@ search-keywords
 ======================
 [![License](https://poser.pugx.org/badges/poser/license.svg)](./LICENSE)
 
-Script that searches for keywords in .txt files, in the "Materials &amp; Methods" section.
+This script searches for the keywords, found in a .txt file, in the "Materials and Methods" section of each .txt file (created from .pdf files).
 
 ## Table of content
 
@@ -60,22 +60,22 @@ You can [download](https://github.com/glenjasper/search-keywords/archive/master.
   usage: search_keywords.py [-h] -ft FOLDER_TXT -fp FOLDER_PDF -kw KEYWORDS
                             [-o OUTPUT] [--version]
 
-  Script que faz a busca de palavras-chave em arquivos .txt, na seção 'Materials
-  and Methods'
+  This script searches for the keywords, found in a .txt file, in the 'Materials
+  and Methods' section of each .txt file (created from .pdf files).
 
   optional arguments:
     -h, --help            show this help message and exit
     -ft FOLDER_TXT, --folder_txt FOLDER_TXT
-                          Pasta que contem os arquivos .txt
+                          Folder containing the .txt files
     -fp FOLDER_PDF, --folder_pdf FOLDER_PDF
-                          Pasta que contem os arquivos .pdf, usado no final da
-                          busca para fazer copias dos arquivos .pdf que
-                          cumpliram a condição
+                          Folder containing .pdf files, used at the end of the
+                          search to make copies of .pdf files that meet the
+                          condition in the 'Materials and Methods' section
     -kw KEYWORDS, --keywords KEYWORDS
-                          Arquivo de texto que contem as palavras-chave, uma
-                          palavra-chave por linha
+                          .txt file containing keywords, there must be one
+                          keyword for each line
     -o OUTPUT, --output OUTPUT
-                          Pasta de saida
+                          Output folder
     --version             show program's version number and exit
 
   Thank you!
