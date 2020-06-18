@@ -11,12 +11,11 @@ import xlsxwriter
 import pandas as pd
 
 def menu(args):
-    parser = argparse.ArgumentParser(description = "Script que faz a busca de palavras-chave em arquivos .txt, na seção 'Materials and Methods'", epilog = "Thank you!")
-    parser.add_argument("-ft", "--folder_txt", required = True, help = "Pasta que contem os arquivos .txt")
-    parser.add_argument("-fp", "--folder_pdf", required = True, help = "Pasta que contem os arquivos .pdf, usado no final da busca para fazer copias dos arquivos .pdf que cumpliram a condição")
-    parser.add_argument("-kw", "--keywords", required = True, help = "Arquivo de texto que contem as palavras-chave, uma palavra-chave por linha")
-    # parser.add_argument("-s", "--section", choices = osk.ARRAY_SECTION, required = True, type = str.lower, help = 'Seção onde as palavras-chaves vão ser procuradas')
-    parser.add_argument("-o", "--output", help = "Pasta de saida")
+    parser = argparse.ArgumentParser(description = "This script searches for the keywords, found in a .txt file, in the 'Materials and Methods' section of each .txt file (created from .pdf files).", epilog = "Thank you!")
+    parser.add_argument("-ft", "--folder_txt", required = True, help = "Folder containing the .txt files")
+    parser.add_argument("-fp", "--folder_pdf", required = True, help = "Folder containing .pdf files, used at the end of the search to make copies of .pdf files that meet the condition in the 'Materials and Methods' section")
+    parser.add_argument("-kw", "--keywords", required = True, help = ".txt file containing keywords, there must be one keyword for each line")
+    parser.add_argument("-o", "--output", help = "Output folder")
     parser.add_argument("--version", action = "version", version = "%s %s" % ('%(prog)s', osk.VERSION))
     args = parser.parse_args()
 
@@ -100,6 +99,7 @@ class SearchKW:
         self.xls_col_doi = 'DOI'
         self.xls_col_document_type = 'Document Type'
         self.xls_col_languaje = 'Language'
+        self.xls_col_cited_by = 'Cited By'
         self.xls_col_repository = 'Repository'
         self.xls_col_txt_name = 'TXT Name'
         self.xls_col_converted = 'Status'
@@ -112,11 +112,6 @@ class SearchKW:
         self.xls_columns_kws = [self.xls_col_item,
                                 self.xls_col_kw,
                                 self.xls_col_npapers]
-
-        # Menu
-        self.MSECT_MATERIAL_METHODS = "material_methods"
-        self.MSECT_CONCLUSIONS = "conclusions"
-        self.ARRAY_SECTION = [self.MSECT_MATERIAL_METHODS, self.MSECT_CONCLUSIONS]
 
         # Sections
         self.SECTION_ABSTRACT = 'ABSTRACT'
@@ -234,6 +229,7 @@ class SearchKW:
                     collect[self.xls_col_doi] = row[self.xls_col_doi]
                     collect[self.xls_col_document_type] = row[self.xls_col_document_type]
                     collect[self.xls_col_languaje] = row[self.xls_col_languaje]
+                    collect[self.xls_col_cited_by] = row[self.xls_col_cited_by]
                     collect[self.xls_col_repository] = row[self.xls_col_repository]
                     collect[self.xls_col_txt_name] = row[self.xls_col_txt_name]
                     dict_txt.update({row[self.xls_col_txt_name]: collect})
@@ -835,6 +831,7 @@ class SearchKW:
             self.xls_columns.append(self.xls_col_doi)
             self.xls_columns.append(self.xls_col_document_type)
             self.xls_columns.append(self.xls_col_languaje)
+            self.xls_columns.append(self.xls_col_cited_by)
             self.xls_columns.append(self.xls_col_repository)
         self.xls_columns.append(self.xls_col_txt_name)
 
@@ -855,6 +852,7 @@ class SearchKW:
                 line.append(txt_info[file][self.xls_col_doi])
                 line.append(txt_info[file][self.xls_col_document_type])
                 line.append(txt_info[file][self.xls_col_languaje])
+                line.append(txt_info[file][self.xls_col_cited_by])
                 line.append(txt_info[file][self.xls_col_repository])
                 line.append(txt_info[file][self.xls_col_txt_name])
             else:
@@ -902,9 +900,10 @@ class SearchKW:
                     worksheet.set_column(first_col = 3, last_col = 3, width = 33) # Column D:D
                     worksheet.set_column(first_col = 4, last_col = 4, width = 18) # Column E:E
                     worksheet.set_column(first_col = 5, last_col = 5, width = 12) # Column F:F
-                    worksheet.set_column(first_col = 6, last_col = 6, width = 13) # Column G:G
-                    worksheet.set_column(first_col = 7, last_col = 7, width = 30) # Column H:H
-                    _start = 8
+                    worksheet.set_column(first_col = 6, last_col = 6, width = 11) # Column G:G
+                    worksheet.set_column(first_col = 7, last_col = 7, width = 13) # Column H:H
+                    worksheet.set_column(first_col = 8, last_col = 8, width = 30) # Column I:I
+                    _start = 9
                 for icol, kw in enumerate(_xls_columns[_start:], start = _start):
                     worksheet.set_column(first_col = icol, last_col = icol, width = len(kw) * 1.2)
             else:
@@ -913,7 +912,7 @@ class SearchKW:
 
             if sheet_type == self.XLS_SHEET_DETAIL:
                 for irow, item in enumerate(data_list, start = 1):
-                    _icol = 7 if is_full else 1
+                    _icol = 8 if is_full else 1
                     for icol, vcolumn in enumerate(item):
                         cell_style = styles_rows if icol <= _icol else styles_row_kws
                         worksheet.write(irow, icol, vcolumn, cell_style)
