@@ -984,6 +984,23 @@ class SearchKW:
                         shutil.copy(pdffile, folder_out)
         return pdfs
 
+    def print_keywords(self):
+        keywords_by_row = []
+        row = []
+        for kw in self.KEYWORDS:
+            len_row = len(', '.join(row))
+
+            if len_row + len(kw) <= 140:
+                row.append(kw)
+            else:
+                keywords_by_row.append(row)
+                row = []
+        if len(row) > 0:
+            keywords_by_row.append(row)
+
+        for row in keywords_by_row:
+            self.show_print("  %s" % ', '.join(row), [self.LOG_FILE], font = self.GREEN)
+
 def main(args):
     try:
         start = osk.start_time()
@@ -994,7 +1011,6 @@ def main(args):
         osk.XLS_FILE_CONVERTED = os.path.join(osk.FOLDER_TXT, osk.XLS_FILE_CONVERTED)
         osk.OUTPUT_PDF = os.path.join(osk.OUTPUT_PATH, osk.OUTPUT_PDF)
         osk.create_directory(osk.OUTPUT_PDF)
-        # osk.KEYWORDS = sorted(osk.read_kws())
         osk.KEYWORDS = osk.read_kws()
         osk.show_print("#############################################################################", [osk.LOG_FILE], font = osk.BIGREEN)
         osk.show_print("############################## Search Keywords ##############################", [osk.LOG_FILE], font = osk.BIGREEN)
@@ -1003,8 +1019,7 @@ def main(args):
 
         osk.show_print("Text files to analyze: %s" % total, [osk.LOG_FILE], font = osk.GREEN)
         osk.show_print("Keywords search (%s):" % len(osk.KEYWORDS), [osk.LOG_FILE], font = osk.GREEN)
-        for i in range(0, len(osk.KEYWORDS), 7):
-            osk.show_print("  %s" % ', '.join(osk.KEYWORDS[i: i + 7]), [osk.LOG_FILE], font = osk.GREEN)
+        osk.print_keywords()
         osk.show_print("", [osk.LOG_FILE])
  
         txt_by_kw = {word: [] for word in osk.KEYWORDS}
