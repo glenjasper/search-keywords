@@ -30,6 +30,7 @@ This script searches for the keywords, found in a .txt file, in the "Materials a
   $ sudo pip3 install argparse
   $ sudo pip3 install xlsxwriter
   $ sudo pip3 install pandas
+  $ sudo pip3 install colorama
 ```
 
 ## Installation
