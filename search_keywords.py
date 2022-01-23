@@ -9,6 +9,8 @@ import argparse
 import traceback
 import xlsxwriter
 import pandas as pd
+from colorama import init
+init()
 
 def menu(args):
     parser = argparse.ArgumentParser(description = "This script searches for the keywords, found in a .txt file, in the 'Materials and Methods' section of each .txt file (created from .pdf files).", epilog = "Thank you!")
