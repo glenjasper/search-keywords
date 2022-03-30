@@ -8,6 +8,7 @@ import shutil
 import argparse
 import traceback
 import xlsxwriter
+import numpy as np
 import pandas as pd
 from colorama import init
 init()
@@ -221,7 +222,8 @@ class SearchKW:
         dict_txt = {}
         if self.check_path(self.XLS_FILE_CONVERTED):
             df = pd.read_excel(io = self.XLS_FILE_CONVERTED, sheet_name = self.XLS_SHEET_DETAIL)
-            df = df.where(pd.notnull(df), None)
+            # df = df.where(pd.notnull(df), None)
+            df = df.replace({np.nan: None})
 
             for idx, row in df.iterrows():
                 if row[self.xls_col_converted] == self.STATUS_OK:
