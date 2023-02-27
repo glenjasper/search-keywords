@@ -13,7 +13,7 @@ import pandas as pd
 from colorama import init
 init()
 
-def menu(args):
+def menu():
     parser = argparse.ArgumentParser(description = "This script searches for the keywords, found in a .txt file, in the 'Materials and Methods' section of each .txt file (created from .pdf files).", epilog = "Thank you!")
     parser.add_argument("-ft", "--folder_txt", required = True, help = "Folder containing the .txt files")
     parser.add_argument("-fp", "--folder_pdf", required = True, help = "Folder containing .pdf files, used at the end of the search to make copies of .pdf files that meet the condition in the 'Materials and Methods' section")
@@ -29,8 +29,8 @@ def menu(args):
 
     osk.FOLDER_TXT = os.path.join(folder_path, folder_name)
     if not osk.check_path(osk.FOLDER_TXT):
-        osk.show_print("%s: error: the folder '%s' doesn't exist" % (os.path.basename(__file__), osk.FOLDER_TXT), showdate = False, font = oscihub.YELLOW)
-        osk.show_print("%s: error: the following arguments are required: -ft/--folder_txt" % os.path.basename(__file__), showdate = False, font = oscihub.YELLOW)
+        osk.show_print("%s: error: the folder '%s' doesn't exist" % (os.path.basename(__file__), osk.FOLDER_TXT), showdate = False, font = osk.YELLOW)
+        osk.show_print("%s: error: the following arguments are required: -ft/--folder_txt" % os.path.basename(__file__), showdate = False, font = osk.YELLOW)
         exit()
 
     folder_name = os.path.basename(args.folder_pdf)
@@ -40,8 +40,8 @@ def menu(args):
 
     osk.FOLDER_PDF = os.path.join(folder_path, folder_name)
     if not osk.check_path(osk.FOLDER_PDF):
-        osk.show_print("%s: error: the folder '%s' doesn't exist" % (os.path.basename(__file__), osk.FOLDER_TXT), showdate = False, font = oscihub.YELLOW)
-        osk.show_print("%s: error: the following arguments are required: -fp/--folder_pdf" % os.path.basename(__file__), showdate = False, font = oscihub.YELLOW)
+        osk.show_print("%s: error: the folder '%s' doesn't exist" % (os.path.basename(__file__), osk.FOLDER_TXT), showdate = False, font = osk.YELLOW)
+        osk.show_print("%s: error: the following arguments are required: -fp/--folder_pdf" % os.path.basename(__file__), showdate = False, font = osk.YELLOW)
         exit()
 
     # osk.SECTION = args.section
@@ -53,8 +53,8 @@ def menu(args):
 
     osk.KEYWORDS = os.path.join(kw_file_path, kw_file_name)
     if not osk.check_path(osk.KEYWORDS):
-        osk.show_print("%s: error: the file '%s' doesn't exist" % (os.path.basename(__file__), osk.KEYWORDS), showdate = False, font = oscihub.YELLOW)
-        osk.show_print("%s: error: the following arguments are required: -kw/--keywords" % os.path.basename(__file__), showdate = False, font = oscihub.YELLOW)
+        osk.show_print("%s: error: the file '%s' doesn't exist" % (os.path.basename(__file__), osk.KEYWORDS), showdate = False, font = osk.YELLOW)
+        osk.show_print("%s: error: the following arguments are required: -kw/--keywords" % os.path.basename(__file__), showdate = False, font = osk.YELLOW)
         exit()
 
     if args.output is not None:
@@ -66,7 +66,7 @@ def menu(args):
         osk.OUTPUT_PATH = os.path.join(output_path, output_name)
         created = osk.create_directory(osk.OUTPUT_PATH)
         if not created:
-            osk.show_print("%s: error: Couldn't create folder '%s'" % (os.path.basename(__file__), osk.OUTPUT_PATH), showdate = False, font = oscihub.YELLOW)
+            osk.show_print("%s: error: Couldn't create folder '%s'" % (os.path.basename(__file__), osk.OUTPUT_PATH), showdate = False, font = osk.YELLOW)
             exit()
     else:
         osk.OUTPUT_PATH = os.getcwd().strip()
@@ -798,6 +798,8 @@ class SearchKW:
                         check = False
                         break
 
+            # gyg
+            # https://github.com/kouroshparsa/toned.git
             if nline_begin > 0 and nline_end > 0:
                 with open(file, 'r') as fr:
                     for nline, line in enumerate(fr, start = 1):
@@ -1005,10 +1007,10 @@ class SearchKW:
         for row in keywords_by_row:
             self.show_print("  %s" % ', '.join(row), [self.LOG_FILE], font = self.GREEN)
 
-def main(args):
+def main():
     try:
         start = osk.start_time()
-        menu(args)
+        menu()
 
         osk.LOG_FILE = os.path.join(osk.OUTPUT_PATH, osk.LOG_NAME)
         osk.XLS_FILE = os.path.join(osk.OUTPUT_PATH, osk.XLS_FILE)
@@ -1074,4 +1076,4 @@ def main(args):
 
 if __name__ == '__main__':
     osk = SearchKW()
-    main(sys.argv)
+    main()
