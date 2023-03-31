@@ -93,11 +93,13 @@ class SearchKW:
         self.XLS_FILE_CONVERTED = 'summary_converted.xlsx'
         self.XLS_FILE = 'kw_search_result.xlsx'
         self.XLS_SHEET_UNIQUE = 'Unique'
+        self.XLS_SHEET_SELECTED = 'Selected'
         self.XLS_SHEET_NPAPERS_BY_KWS = '# Papers by KWs'
 
         # Xls Columns
         self.xls_col_item = 'Item'
         self.xls_col_title = 'Title'
+        self.xls_col_abstract = 'Abstract'
         self.xls_col_year = 'Year'
         self.xls_col_doi = 'DOI'
         self.xls_col_document_type = 'Document Type'
@@ -229,6 +231,7 @@ class SearchKW:
                 if row[self.xls_col_converted] == self.STATUS_OK:
                     collect = {}
                     collect[self.xls_col_title] = row[self.xls_col_title]
+                    collect[self.xls_col_abstract] = row[self.xls_col_abstract]
                     collect[self.xls_col_year] = row[self.xls_col_year]
                     collect[self.xls_col_doi] = row[self.xls_col_doi]
                     collect[self.xls_col_document_type] = row[self.xls_col_document_type]
@@ -833,6 +836,7 @@ class SearchKW:
         txt_info = self.read_xls()
         if len(txt_info) > 0:
             self.xls_columns.append(self.xls_col_title)
+            self.xls_columns.append(self.xls_col_abstract)
             self.xls_columns.append(self.xls_col_year)
             self.xls_columns.append(self.xls_col_doi)
             self.xls_columns.append(self.xls_col_document_type)
@@ -854,6 +858,7 @@ class SearchKW:
             line = [index]
             if file in txt_info.keys():
                 line.append(txt_info[file][self.xls_col_title])
+                line.append(txt_info[file][self.xls_col_abstract])
                 line.append(txt_info[file][self.xls_col_year])
                 line.append(txt_info[file][self.xls_col_doi])
                 line.append(txt_info[file][self.xls_col_document_type])
@@ -869,7 +874,7 @@ class SearchKW:
                 line.append(status)
             data_result.append(line)
 
-        data_search = {self.XLS_SHEET_UNIQUE: data_result,
+        data_search = {self.XLS_SHEET_SELECTED: data_result,
                        self.XLS_SHEET_NPAPERS_BY_KWS: dict_by_kw}
 
         self.save_xls(data_search)
@@ -878,7 +883,7 @@ class SearchKW:
 
         def create_sheet(oworkbook, sheet_type, data_list, styles_title, styles_rows, styles_row_kws):
             is_full = False
-            if sheet_type == self.XLS_SHEET_UNIQUE:
+            if sheet_type == self.XLS_SHEET_SELECTED:
                 _xls_columns = self.xls_columns.copy()
                 if self.xls_col_doi in _xls_columns:
                     is_full = True
@@ -898,27 +903,28 @@ class SearchKW:
 
             # Add rows
             worksheet.set_column(first_col = 0, last_col = 0, width = 7)  # Column A:A
-            if sheet_type == self.XLS_SHEET_UNIQUE:
-                worksheet.set_column(first_col = 1, last_col = 1, width = 40) # Column B:B
+            if sheet_type == self.XLS_SHEET_SELECTED:
+                worksheet.set_column(first_col = 1, last_col = 1, width = 30) # Column B:B
                 _start = 2
                 if is_full:
-                    worksheet.set_column(first_col = 2, last_col = 2, width = 8)  # Column C:C
-                    worksheet.set_column(first_col = 3, last_col = 3, width = 33) # Column D:D
-                    worksheet.set_column(first_col = 4, last_col = 4, width = 18) # Column E:E
-                    worksheet.set_column(first_col = 5, last_col = 5, width = 12) # Column F:F
-                    worksheet.set_column(first_col = 6, last_col = 6, width = 11) # Column G:G
-                    worksheet.set_column(first_col = 7, last_col = 7, width = 13) # Column H:H
-                    worksheet.set_column(first_col = 8, last_col = 8, width = 30) # Column I:I
-                    _start = 9
+                    worksheet.set_column(first_col = 2, last_col = 2, width = 33) # Column C:C
+                    worksheet.set_column(first_col = 3, last_col = 3, width = 8)  # Column D:D
+                    worksheet.set_column(first_col = 4, last_col = 4, width = 30) # Column E:E
+                    worksheet.set_column(first_col = 5, last_col = 5, width = 18) # Column F:F
+                    worksheet.set_column(first_col = 6, last_col = 6, width = 12) # Column G:G
+                    worksheet.set_column(first_col = 7, last_col = 7, width = 11) # Column H:H
+                    worksheet.set_column(first_col = 8, last_col = 8, width = 13) # Column I:I
+                    worksheet.set_column(first_col = 9, last_col = 9, width = 30) # Column J:J
+                    _start = 10
                 for icol, kw in enumerate(_xls_columns[_start:], start = _start):
                     worksheet.set_column(first_col = icol, last_col = icol, width = len(kw) * 1.2)
             else:
                 worksheet.set_column(first_col = 1, last_col = 1, width = 17) # Column B:B
                 worksheet.set_column(first_col = 2, last_col = 2, width = 12) # Column C:C
 
-            if sheet_type == self.XLS_SHEET_UNIQUE:
+            if sheet_type == self.XLS_SHEET_SELECTED:
                 for irow, item in enumerate(data_list, start = 1):
-                    _icol = 8 if is_full else 1
+                    _icol = 9 if is_full else 1
                     for icol, vcolumn in enumerate(item):
                         cell_style = styles_rows if icol <= _icol else styles_row_kws
                         worksheet.write(irow, icol, vcolumn, cell_style)
@@ -940,7 +946,7 @@ class SearchKW:
         cell_format_row = workbook.add_format({'text_wrap': True, 'valign': 'top'})
         cell_format_row_kw = workbook.add_format({'align': 'center', 'valign': 'vcenter'})
 
-        create_sheet(workbook, self.XLS_SHEET_UNIQUE, data[self.XLS_SHEET_UNIQUE], cell_format_title, cell_format_row, cell_format_row_kw)
+        create_sheet(workbook, self.XLS_SHEET_SELECTED, data[self.XLS_SHEET_SELECTED], cell_format_title, cell_format_row, cell_format_row_kw)
         create_sheet(workbook, self.XLS_SHEET_NPAPERS_BY_KWS, data[self.XLS_SHEET_NPAPERS_BY_KWS], cell_format_title, cell_format_row, cell_format_row_kw)
 
         workbook.close()
