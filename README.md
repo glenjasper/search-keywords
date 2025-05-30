@@ -15,7 +15,7 @@ This script searches for the keywords, found in a .txt file, in the "Materials a
 - [Author](#author)
 - [Organization](#organization)
 - [License](#license)
-- [Acknowledgments](#acknowledgments)
+- [Required Attribution](#required-attribution)
 
 ## Pre-requisites
 
@@ -94,8 +94,12 @@ You can [download](https://github.com/glenjasper/search-keywords/archive/master.
 
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
 
-## Mandatory Attribution
+## Required Attribution
 
-**Any use, distribution, or modification of this software must include the following attribution:**
+**Any use, distribution, or modification of this software must include one of the following attributions:**
 
 > This software was developed by Glen Jasper (https://github.com/glenjasper), originally available at https://github.com/glenjasper/search-keywords
+
+**or** (example citation):
+
+> Jasper G. (2024). *format_input.py* script. Available at: https://github.com/glenjasper/search-keywords (Accessed 21 July 2024)
